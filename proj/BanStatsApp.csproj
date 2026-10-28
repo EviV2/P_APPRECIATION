@@ -23,4 +23,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="BanStatsApp.Tests\**" />
+    <None Remove="BanStatsApp.Tests\**" />
+  </ItemGroup>
 </Project>

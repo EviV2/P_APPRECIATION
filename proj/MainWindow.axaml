@@ -1,0 +1,340 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:ScottPlot="clr-namespace:ScottPlot.Avalonia;assembly=ScottPlot.Avalonia"
+        xmlns:ctrl="clr-namespace:BanStatsApp.Controllers"
+        mc:Ignorable="d" d:DesignWidth="1180" d:DesignHeight="780"
+        Width="1200" Height="820"
+        MinWidth="960" MinHeight="660"
+        x:Class="BanStatsApp.MainWindow"
+        x:DataType="ctrl:MainWindowController"
+        Title="Plot Those Lines (PTL) - League Statistics"
+        WindowStartupLocation="CenterScreen">
+
+    <Window.Background>
+        <LinearGradientBrush StartPoint="0%,0%" EndPoint="100%,100%">
+            <GradientStop Color="#F5EDFA" Offset="0.0" />
+            <GradientStop Color="#EDE9FE" Offset="0.45" />
+            <GradientStop Color="#E2E8F0" Offset="1.0" />
+        </LinearGradientBrush>
+    </Window.Background>
+
+    <Grid RowDefinitions="Auto,*,Auto" Margin="24,18,24,18">
+        <!-- En-tête de l'application -->
+        <Grid Grid.Row="0" ColumnDefinitions="*,Auto" Margin="0,0,0,16">
+            <StackPanel Orientation="Vertical" VerticalAlignment="Center">
+                <TextBlock Text="League statistics"
+                           FontSize="32"
+                           FontWeight="Bold"
+                           Foreground="#0F172A"
+                           LetterSpacing="-0.5" />
+                <TextBlock Text="season 12 and 13"
+                           FontSize="18"
+                           FontWeight="Medium"
+                           Foreground="#475569"
+                           Margin="0,2,0,0" />
+            </StackPanel>
+
+            <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="8" VerticalAlignment="Center">
+                <Button Name="ZoomInButton"
+                        Content="＋ Zoom In"
+                        Padding="12,6"
+                        CornerRadius="8"
+                        Background="#FFFFFF"
+                        BorderBrush="#CBD5E1"
+                        BorderThickness="1"
+                        FontWeight="SemiBold"
+                        Foreground="#334155" />
+                <Button Name="ZoomOutButton"
+                        Content="－ Zoom Out"
+                        Padding="12,6"
+                        CornerRadius="8"
+                        Background="#FFFFFF"
+                        BorderBrush="#CBD5E1"
+                        BorderThickness="1"
+                        FontWeight="SemiBold"
+                        Foreground="#334155" />
+                <Button Name="ResetZoomButton"
+                        Content="↺ Reset View"
+                        Padding="12,6"
+                        CornerRadius="8"
+                        Background="#FFFFFF"
+                        BorderBrush="#CBD5E1"
+                        BorderThickness="1"
+                        FontWeight="SemiBold"
+                        Foreground="#334155" />
+                <Button Name="ImportButton"
+                        Content="📂 Importer"
+                        Padding="12,6"
+                        CornerRadius="8"
+                        Background="#FFFFFF"
+                        BorderBrush="#CBD5E1"
+                        BorderThickness="1"
+                        FontWeight="SemiBold"
+                        Foreground="#334155" />
+                <Button Name="ExportButton"
+                        Content="📥 Export CSV"
+                        Padding="12,6"
+                        CornerRadius="8"
+                        Background="#E0247C"
+                        Foreground="#FFFFFF"
+                        FontWeight="SemiBold" />
+            </StackPanel>
+        </Grid>
+
+        <!-- Zone principale : Graphique et panneau latéral de contrôle -->
+        <Grid Grid.Row="1" ColumnDefinitions="2.3*,1*">
+            <!-- Rendu du graphique ScottPlot -->
+            <Border Grid.Column="0"
+                    Background="#FFFFFF"
+                    CornerRadius="16"
+                    BorderBrush="#E2E8F0"
+                    BorderThickness="1"
+                    BoxShadow="0 4 16 0 #14000000"
+                    Padding="16"
+                    Margin="0,0,16,0">
+                <ScottPlot:AvaPlot Name="MainPlot" />
+            </Border>
+
+            <!-- Panneau latéral : Séries, filtres et statistiques -->
+            <ScrollViewer Grid.Column="1">
+                <StackPanel Spacing="14">
+                    <!-- Sélecteur des séries à tracer (Banrate, Winrate, Pickrate) -->
+                    <Border Background="#FFFFFF"
+                            CornerRadius="12"
+                            BorderBrush="#E2E8F0"
+                            BorderThickness="1"
+                            BoxShadow="0 2 8 0 #0A000000"
+                            Padding="16">
+                        <StackPanel Spacing="10">
+                            <TextBlock Text="Séries temporelles"
+                                       FontSize="14"
+                                       FontWeight="Bold"
+                                       Foreground="#0F172A" />
+
+                            <!-- Banrate (Rose vif #E0247C) - Coché par défaut -->
+                            <Grid ColumnDefinitions="*,Auto" VerticalAlignment="Center">
+                                <CheckBox Grid.Column="0"
+                                          Content="Banrate"
+                                          IsChecked="{Binding ShowBanRate}"
+                                          FontWeight="Medium"
+                                          Foreground="#1E293B" />
+                                <Border Grid.Column="1"
+                                        Width="44"
+                                        Height="3.5"
+                                        Background="#E0247C"
+                                        CornerRadius="1.5"
+                                        VerticalAlignment="Center" />
+                            </Grid>
+
+                            <!-- Winrate (Noir / Gris très sombre #1E293B) -->
+                            <Grid ColumnDefinitions="*,Auto" VerticalAlignment="Center">
+                                <CheckBox Grid.Column="0"
+                                          Content="Winrate"
+                                          IsChecked="{Binding ShowWinRate}"
+                                          FontWeight="Medium"
+                                          Foreground="#1E293B" />
+                                <Border Grid.Column="1"
+                                        Width="44"
+                                        Height="3.5"
+                                        Background="#1E293B"
+                                        CornerRadius="1.5"
+                                        VerticalAlignment="Center" />
+                            </Grid>
+
+                            <!-- Pickrate (Rouge #EF4444) -->
+                            <Grid ColumnDefinitions="*,Auto" VerticalAlignment="Center">
+                                <CheckBox Grid.Column="0"
+                                          Content="Pickrate"
+                                          IsChecked="{Binding ShowPickRate}"
+                                          FontWeight="Medium"
+                                          Foreground="#1E293B" />
+                                <Border Grid.Column="1"
+                                        Width="44"
+                                        Height="3.5"
+                                        Background="#EF4444"
+                                        CornerRadius="1.5"
+                                        VerticalAlignment="Center" />
+                            </Grid>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- Filtres et sélection du champion -->
+                    <Border Background="#FFFFFF"
+                            CornerRadius="12"
+                            BorderBrush="#E2E8F0"
+                            BorderThickness="1"
+                            BoxShadow="0 2 8 0 #0A000000"
+                            Padding="16">
+                        <StackPanel Spacing="10">
+                            <TextBlock Text="Filtres &amp; Données"
+                                       FontSize="14"
+                                       FontWeight="Bold"
+                                       Foreground="#0F172A" />
+
+                            <StackPanel Spacing="4">
+                                <TextBlock Text="Champion :"
+                                           FontSize="12"
+                                           FontWeight="Medium"
+                                           Foreground="#64748B" />
+                                <ComboBox ItemsSource="{Binding AvailableChampions}"
+                                          SelectedItem="{Binding ChampionName}"
+                                          HorizontalAlignment="Stretch"
+                                          CornerRadius="6" />
+                            </StackPanel>
+
+                            <!-- Plage de dates personnalisée (du ... au ...) -->
+                            <StackPanel Spacing="4">
+                                <Grid ColumnDefinitions="*,Auto">
+                                    <TextBlock Grid.Column="0"
+                                               Text="Plage de dates (du / au) :"
+                                               FontSize="12"
+                                               FontWeight="Medium"
+                                               Foreground="#64748B"
+                                               VerticalAlignment="Center" />
+                                    <Button Grid.Column="1"
+                                            Name="ResetDatesButton"
+                                            Content="Toutes"
+                                            Padding="6,2"
+                                            FontSize="10"
+                                            CornerRadius="4"
+                                            Background="#F1F5F9"
+                                            BorderBrush="#CBD5E1"
+                                            BorderThickness="1"
+                                            Foreground="#475569" />
+                                </Grid>
+
+                                <Grid ColumnDefinitions="*,*" Margin="0,2,0,0">
+                                    <CalendarDatePicker Grid.Column="0"
+                                                        SelectedDate="{Binding StartDate}"
+                                                        Watermark="Début"
+                                                        HorizontalAlignment="Stretch"
+                                                        Margin="0,0,3,0"
+                                                        CornerRadius="6" />
+                                    <CalendarDatePicker Grid.Column="1"
+                                                        SelectedDate="{Binding EndDate}"
+                                                        Watermark="Fin"
+                                                        HorizontalAlignment="Stretch"
+                                                        Margin="3,0,0,0"
+                                                        CornerRadius="6" />
+                                </Grid>
+                            </StackPanel>
+
+                            <StackPanel Spacing="4">
+                                <TextBlock Text="Filtre Saison :"
+                                           FontSize="12"
+                                           FontWeight="Medium"
+                                           Foreground="#64748B" />
+                                <ComboBox ItemsSource="{Binding AvailableSeasons}"
+                                          SelectedItem="{Binding SelectedSeason}"
+                                          HorizontalAlignment="Stretch"
+                                          CornerRadius="6" />
+                            </StackPanel>
+
+                            <StackPanel Spacing="4">
+                                <TextBlock Text="Filtre Patch :"
+                                           FontSize="12"
+                                           FontWeight="Medium"
+                                           Foreground="#64748B" />
+                                <ComboBox ItemsSource="{Binding AvailablePatches}"
+                                          SelectedItem="{Binding SelectedPatch}"
+                                          HorizontalAlignment="Stretch"
+                                          CornerRadius="6" />
+                            </StackPanel>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- Indicateurs statistiques avec boîtes stylées pour toutes les métriques -->
+                    <Border Background="#FFFFFF"
+                            CornerRadius="12"
+                            BorderBrush="#E2E8F0"
+                            BorderThickness="1"
+                            BoxShadow="0 2 8 0 #0A000000"
+                            Padding="16">
+                        <StackPanel Spacing="8">
+                            <Grid ColumnDefinitions="*,Auto">
+                                <TextBlock Grid.Column="0"
+                                           Text="{Binding StatsTitle}"
+                                           FontSize="14"
+                                           FontWeight="Bold"
+                                           Foreground="#0F172A"
+                                           VerticalAlignment="Center" />
+                                <ComboBox Grid.Column="1"
+                                          ItemsSource="{Binding AvailableStatsMetrics}"
+                                          SelectedItem="{Binding SelectedStatsMetric}"
+                                          CornerRadius="6"
+                                          Padding="8,3"
+                                          FontSize="11" />
+                            </Grid>
+
+                            <Grid RowDefinitions="Auto,Auto,Auto" ColumnDefinitions="*,*" Margin="0,4,0,0">
+                                <!-- Actuel -->
+                                <Border Grid.Row="0" Grid.Column="0" Background="#F8FAFC" CornerRadius="8" Padding="10,6" Margin="0,0,4,4">
+                                    <StackPanel>
+                                        <TextBlock Text="Actuel" FontSize="11" Foreground="#64748B" />
+                                        <TextBlock Text="{Binding ActiveStats.Current, StringFormat='{}{0:F2}%'}" FontSize="15" FontWeight="Bold" Foreground="#0F172A" />
+                                    </StackPanel>
+                                </Border>
+
+                                <!-- Moyenne -->
+                                <Border Grid.Row="0" Grid.Column="1" Background="#F8FAFC" CornerRadius="8" Padding="10,6" Margin="4,0,0,4">
+                                    <StackPanel>
+                                        <TextBlock Text="Moyenne" FontSize="11" Foreground="#64748B" />
+                                        <TextBlock Text="{Binding ActiveStats.Average, StringFormat='{}{0:F2}%'}" FontSize="15" FontWeight="Bold" Foreground="#0F172A" />
+                                    </StackPanel>
+                                </Border>
+
+                                <!-- Pic (Max) -->
+                                <Border Grid.Row="1" Grid.Column="0" Background="#FDF2F8" CornerRadius="8" Padding="10,6" Margin="0,4,4,4">
+                                    <StackPanel>
+                                        <TextBlock Text="Pic (Max)" FontSize="11" Foreground="#64748B" />
+                                        <TextBlock Text="{Binding ActiveStats.Max, StringFormat='{}{0:F2}%'}" FontSize="15" FontWeight="Bold" Foreground="#0F172A" />
+                                    </StackPanel>
+                                </Border>
+
+                                <!-- Plus bas (Min) -->
+                                <Border Grid.Row="1" Grid.Column="1" Background="#F0FDF4" CornerRadius="8" Padding="10,6" Margin="4,4,0,4">
+                                    <StackPanel>
+                                        <TextBlock Text="Plus bas (Min)" FontSize="11" Foreground="#64748B" />
+                                        <TextBlock Text="{Binding ActiveStats.Min, StringFormat='{}{0:F2}%'}" FontSize="15" FontWeight="Bold" Foreground="#0F172A" />
+                                    </StackPanel>
+                                </Border>
+
+                                <!-- Total points -->
+                                <Border Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Background="#F1F5F9" CornerRadius="8" Padding="10,6" Margin="0,4,0,0">
+                                    <Grid ColumnDefinitions="*,Auto">
+                                        <TextBlock Grid.Column="0" Text="Total points mesurés" FontSize="11" Foreground="#64748B" VerticalAlignment="Center" />
+                                        <TextBlock Grid.Column="1" Text="{Binding Summary.TotalPoints}" FontSize="14" FontWeight="Bold" Foreground="#0F172A" VerticalAlignment="Center" />
+                                    </Grid>
+                                </Border>
+                            </Grid>
+                        </StackPanel>
+                    </Border>
+                </StackPanel>
+            </ScrollViewer>
+        </Grid>
+
+        <!-- Barre d'état inférieure -->
+        <Border Grid.Row="2"
+                Background="#FFFFFF"
+                CornerRadius="8"
+                BorderBrush="#E2E8F0"
+                BorderThickness="1"
+                Padding="12,6"
+                Margin="0,12,0,0">
+            <Grid ColumnDefinitions="*,Auto">
+                <TextBlock Grid.Column="0"
+                           Text="{Binding StatusMessage}"
+                           FontSize="12"
+                           Foreground="#475569"
+                           VerticalAlignment="Center" />
+                <TextBlock Grid.Column="1"
+                           Text="Plot Those Lines (PTL) • ETML P_FUN • Avalonia &amp; ScottPlot"
+                           FontSize="11"
+                           Foreground="#94A3B8"
+                           VerticalAlignment="Center" />
+            </Grid>
+        </Border>
+    </Grid>
+</Window>

@@ -1,14 +1,16 @@
+// elias veya
+// init de base pour avalonia
+
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
 
 namespace BanStatsApp;
 
-// classe principale initialisant les ressources xaml et le cycle de vie de l'application
 public partial class App : Application
 {
     /// <summary>
-    /// charge les composants et styles avalonia
+    /// charge les styles et composants
     /// </summary>
     public override void Initialize()
     {
@@ -16,7 +18,7 @@ public partial class App : Application
     }
 
     /// <summary>
-    /// configure la fenetre principale une fois l'initialisation terminee
+    /// definit la fenetre principale
     /// </summary>
     public override void OnFrameworkInitializationCompleted()
     {

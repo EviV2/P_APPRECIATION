@@ -1,5 +1,9 @@
+// elias veya
+// generation des graduations de l'axe du bas pour scottplot
+
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using ScottPlot;
 using ScottPlot.TickGenerators;
 using SkiaSharp;
@@ -7,7 +11,6 @@ using BanStatsApp.Models;
 
 namespace BanStatsApp.Services;
 
-// affiche les patchs et dates sur l axe du bas
 public class PatchTickGenerator : ITickGenerator
 {
     private readonly IReadOnlyList<BanRateRecord> _records;
@@ -16,7 +19,7 @@ public class PatchTickGenerator : ITickGenerator
     public int MaxTickCount { get; set; } = 6;
 
     /// <summary>
-    /// constructeur recevant la liste des donnees
+    /// constructeur recevant la liste des enregistrements
     /// </summary>
     public PatchTickGenerator(IReadOnlyList<BanRateRecord> records)
     {
@@ -24,7 +27,7 @@ public class PatchTickGenerator : ITickGenerator
     }
 
     /// <summary>
-    /// calcule les graduations visibles
+    /// recalcule les graduations visibles selon le zoom
     /// </summary>
     public void Regenerate(CoordinateRange range, Edge edge, PixelLength size, SKPaint paint, LabelStyle labelStyle)
     {
@@ -43,17 +46,15 @@ public class PatchTickGenerator : ITickGenerator
             return;
         }
 
-        int step = Math.Max(1, (end - start) / 6);
-        List<Tick> tickList = new List<Tick>();
+        int step = Math.Max(1, (end - start) / MaxTickCount);
+        int count = ((end - start) / step) + 1;
 
-        // boucle sur les enregistrements a afficher
-        for (int i = start; i <= end; i += step)
-        {
-            BanRateRecord r = _records[i];
-            string label = $"{r.Patch}\n{r.Date:yyyy-MM-dd}";
-            tickList.Add(new Tick(r.Index, label, true));
-        }
-
-        Ticks = tickList.ToArray();
+        // calcule les labels patch + date
+        Ticks = Enumerable.Range(0, count)
+            .Select(i => start + (i * step))
+            .Where(idx => idx <= end && idx < _records.Count)
+            .Select(idx => _records[idx])
+            .Select(r => new Tick(r.Index, $"{r.Patch}\n{r.Date:yyyy-MM-dd}", true))
+            .ToArray();
     }
 }
