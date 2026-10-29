@@ -87,7 +87,7 @@ public class MainWindowController : INotifyPropertyChanged
         _ => Summary.BanRate
     };
 
-    public string StatsTitle => $"Statistiques globales ({SelectedStatsMetric})";
+    public string StatsTitle => $"Global stats ({SelectedStatsMetric})";
 
     public DateTime? StartDate
     {
@@ -403,25 +403,6 @@ public class MainWindowController : INotifyPropertyChanged
         RequestPointHighlight?.Invoke(record, metricName, metricValue, colorHex);
 
         StatusMessage = $"{record.Date:dd.MM.yyyy} (Patch {record.Patch}) • {metricName}: {metricValue:F2}% (Ban: {record.BanRate:F1}%, Win: {record.WinRate:F1}%, Pick: {record.PickRate:F1}%)";
-    }
-
-    /// <summary>
-    /// exporte les enregistrements filtres en fichier csv
-    /// </summary>
-    public string ExportFilteredData(string? destinationPath = null)
-    {
-        string exportPath = destinationPath ?? Path.Combine(Directory.GetCurrentDirectory(), "ban_stats_export.csv");
-
-        var lines = new List<string> { "Date,Patch,Banrate (%),pickrate (%),winrate (%)" };
-
-        var rows = FilteredRecords.Select(r =>
-            $"{r.Date:yyyy-MM-dd},{r.Patch},{r.BanRate:F2},{r.PickRate:F2},{r.WinRate:F2}");
-
-        lines.AddRange(rows);
-        File.WriteAllLines(exportPath, lines);
-
-        StatusMessage = $"{lines.Count - 1} lignes exportees vers {Path.GetFileName(exportPath)}";
-        return exportPath;
     }
 
     /// <summary>

@@ -29,7 +29,7 @@ public class PlotService
         plot.Grid.MajorLineColor = Color.FromHex("#F1F5F9");
         plot.Grid.MajorLineWidth = 1;
 
-        plot.Axes.Left.Label.Text = "Pourcentage (%)";
+        plot.Axes.Left.Label.Text = "Percentage (%)";
         plot.Axes.Left.Label.Bold = true;
         plot.Axes.Left.Label.FontSize = 13;
         plot.Axes.Left.Label.ForeColor = Color.FromHex("#334155");

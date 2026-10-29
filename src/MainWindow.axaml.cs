@@ -67,7 +67,6 @@ public partial class MainWindow : Window
         };
 
         ImportButton.Click += OnImportClick;
-        ExportButton.Click += OnExportClick;
 
         Loaded += (_, _) => _controller.Initialize("data");
     }
@@ -145,31 +144,5 @@ public partial class MainWindow : Window
             string path = files[0].Path.LocalPath;
             _controller.LoadFromFile(path);
         }
-    }
-
-    /// <summary>
-    /// enregistre les donnees filtrees en fichier csv
-    /// </summary>
-    private async void OnExportClick(object? sender, RoutedEventArgs e)
-    {
-        TopLevel? topLevel = TopLevel.GetTopLevel(this);
-        if (topLevel != null)
-        {
-            IStorageFile? file = await topLevel.StorageProvider.SaveFilePickerAsync(new FilePickerSaveOptions
-            {
-                Title = "exporter en csv",
-                SuggestedFileName = "ban_stats_export.csv",
-                DefaultExtension = "csv"
-            });
-
-            if (file != null)
-            {
-                _controller.ExportFilteredData(file.Path.LocalPath);
-                return;
-            }
-        }
-
-        string fallbackPath = Path.Combine(Directory.GetCurrentDirectory(), "ban_stats_export.csv");
-        _controller.ExportFilteredData(fallbackPath);
     }
 }

@@ -29,7 +29,7 @@
                            FontWeight="Bold"
                            Foreground="#0F172A"
                            LetterSpacing="-0.5" />
-                <TextBlock Text="season 12 and 13"
+                <TextBlock Text="season 13 to 16"
                            FontSize="18"
                            FontWeight="Medium"
                            Foreground="#475569"
@@ -73,13 +73,6 @@
                         BorderThickness="1"
                         FontWeight="SemiBold"
                         Foreground="#334155" />
-                <Button Name="ExportButton"
-                        Content="📥 Export CSV"
-                        Padding="12,6"
-                        CornerRadius="8"
-                        Background="#E0247C"
-                        Foreground="#FFFFFF"
-                        FontWeight="SemiBold" />
             </StackPanel>
         </Grid>
 
@@ -108,7 +101,7 @@
                             BoxShadow="0 2 8 0 #0A000000"
                             Padding="16">
                         <StackPanel Spacing="10">
-                            <TextBlock Text="Séries temporelles"
+                            <TextBlock Text="Lines"
                                        FontSize="14"
                                        FontWeight="Bold"
                                        Foreground="#0F172A" />
@@ -168,7 +161,7 @@
                             BoxShadow="0 2 8 0 #0A000000"
                             Padding="16">
                         <StackPanel Spacing="10">
-                            <TextBlock Text="Filtres &amp; Données"
+                            <TextBlock Text="Filter &amp; data"
                                        FontSize="14"
                                        FontWeight="Bold"
                                        Foreground="#0F172A" />
@@ -185,10 +178,12 @@
                             </StackPanel>
 
                             <!-- Plage de dates personnalisée (du ... au ...) -->
-                            <StackPanel Spacing="4">
+							<!--Traduction main je suis pas mega sur-->
+
+							<StackPanel Spacing="4">
                                 <Grid ColumnDefinitions="*,Auto">
                                     <TextBlock Grid.Column="0"
-                                               Text="Plage de dates (du / au) :"
+                                               Text="Dates (from / to) :"
                                                FontSize="12"
                                                FontWeight="Medium"
                                                Foreground="#64748B"
@@ -222,7 +217,7 @@
                             </StackPanel>
 
                             <StackPanel Spacing="4">
-                                <TextBlock Text="Filtre Saison :"
+                                <TextBlock Text="Season filter:"
                                            FontSize="12"
                                            FontWeight="Medium"
                                            Foreground="#64748B" />
@@ -233,7 +228,7 @@
                             </StackPanel>
 
                             <StackPanel Spacing="4">
-                                <TextBlock Text="Filtre Patch :"
+                                <TextBlock Text="Patch Filter:"
                                            FontSize="12"
                                            FontWeight="Medium"
                                            Foreground="#64748B" />
@@ -272,7 +267,7 @@
                                 <!-- Actuel -->
                                 <Border Grid.Row="0" Grid.Column="0" Background="#F8FAFC" CornerRadius="8" Padding="10,6" Margin="0,0,4,4">
                                     <StackPanel>
-                                        <TextBlock Text="Actuel" FontSize="11" Foreground="#64748B" />
+                                        <TextBlock Text="Actual" FontSize="11" Foreground="#64748B" />
                                         <TextBlock Text="{Binding ActiveStats.Current, StringFormat='{}{0:F2}%'}" FontSize="15" FontWeight="Bold" Foreground="#0F172A" />
                                     </StackPanel>
                                 </Border>
@@ -280,7 +275,7 @@
                                 <!-- Moyenne -->
                                 <Border Grid.Row="0" Grid.Column="1" Background="#F8FAFC" CornerRadius="8" Padding="10,6" Margin="4,0,0,4">
                                     <StackPanel>
-                                        <TextBlock Text="Moyenne" FontSize="11" Foreground="#64748B" />
+                                        <TextBlock Text="Average" FontSize="11" Foreground="#64748B" />
                                         <TextBlock Text="{Binding ActiveStats.Average, StringFormat='{}{0:F2}%'}" FontSize="15" FontWeight="Bold" Foreground="#0F172A" />
                                     </StackPanel>
                                 </Border>
@@ -296,7 +291,7 @@
                                 <!-- Plus bas (Min) -->
                                 <Border Grid.Row="1" Grid.Column="1" Background="#F0FDF4" CornerRadius="8" Padding="10,6" Margin="4,4,0,4">
                                     <StackPanel>
-                                        <TextBlock Text="Plus bas (Min)" FontSize="11" Foreground="#64748B" />
+                                        <TextBlock Text="Lowest (Min)" FontSize="11" Foreground="#64748B" />
                                         <TextBlock Text="{Binding ActiveStats.Min, StringFormat='{}{0:F2}%'}" FontSize="15" FontWeight="Bold" Foreground="#0F172A" />
                                     </StackPanel>
                                 </Border>
@@ -304,7 +299,7 @@
                                 <!-- Total points -->
                                 <Border Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Background="#F1F5F9" CornerRadius="8" Padding="10,6" Margin="0,4,0,0">
                                     <Grid ColumnDefinitions="*,Auto">
-                                        <TextBlock Grid.Column="0" Text="Total points mesurés" FontSize="11" Foreground="#64748B" VerticalAlignment="Center" />
+                                        <TextBlock Grid.Column="0" Text="Number of points" FontSize="11" Foreground="#64748B" VerticalAlignment="Center" />
                                         <TextBlock Grid.Column="1" Text="{Binding Summary.TotalPoints}" FontSize="14" FontWeight="Bold" Foreground="#0F172A" VerticalAlignment="Center" />
                                     </Grid>
                                 </Border>
@@ -330,7 +325,7 @@
                            Foreground="#475569"
                            VerticalAlignment="Center" />
                 <TextBlock Grid.Column="1"
-                           Text="Plot Those Lines (PTL) • ETML P_FUN • Avalonia &amp; ScottPlot"
+                           Text="Plot Those Lines (PTL) • ETML P_FUN • Avalonia"
                            FontSize="11"
                            Foreground="#94A3B8"
                            VerticalAlignment="Center" />
